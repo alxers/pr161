@@ -1,0 +1,13 @@
+<%= link_to 'New report', new_report_path %>
+
+<table>
+  <% @reports.each do |r| %>
+  <tr>
+    <td> <%= r.created_at %> </td>
+    <td> <%= r.start_date %> </td>
+    <td> <%= r.campaign_id %> </td>
+    <td> <%= link_to 'Download PDF', generate_pdf_report_path(r) %> </td>
+    <td> <%= link_to 'Edit report', edit_report_path(r) %> </td>
+  </tr>
+  <% end %>
+</table>

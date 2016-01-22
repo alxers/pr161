@@ -13,29 +13,31 @@ class PdfMaker
 
   def generate
     apply_defaults_for([@campaign_res, @creative_res])
-    # pdf.table([
-    #           ['Campaign name', 'Impressions', 'Clicks', 'Media Budget', 'Ctr', 'Conv.', 'eCPM', 'eCPC', 'eCPA', 'Spent'],
-    #           [@campaign_res['campaign_name'], @campaign_res['impressions'], @campaign_res['clicks'], @campaign_res['media_budget'],
-    #            @campaign_res['ctr'], @campaign_res['conversions'], calculate_vals(@campaign_res, 'eCPM'),
-    #            calculate_vals(@campaign_res, 'eCPC'), calculate_vals(@campaign_res, 'eCPA'),
-    #            @campaign_res['campaign_cost']]
-    #       ])
+
     create_table(@campaign_res, 'campaign_name')
     create_table(@creative_res, 'creative_name')
-    create_graph(@charts_res)
-    # pdf.text "Hello World"
+    campaign_cost_graph
+
+    @pdf.start_new_page
+    imp_vs_clicks_graph
+    ecpm_ecpc_graph
+    ctr_graph
+
+    @pdf.start_new_page
+    conversions_graph
+
     @pdf.render
   end
 
   private
     def apply_defaults_for(tables)
       tables.each do |t|
-        t['gross_revenues'] = 0 if t['gross_revenues'].nil?
         t.each { |key, val| t[key] = 0 if val.nil? }
       end
     end
 
     def calculate_vals(table, val)
+      table['gross_revenues'] = 0 if table['gross_revenues'].nil?
       case val
       when 'eCPM'
         table['impressions'].nonzero? ? table['gross_revenues'] / table['impressions'] * 1000 : 0
@@ -56,7 +58,30 @@ class PdfMaker
           ])
     end
 
-    def create_graph(data)
-      @pdf.chart views: data.map {|d| [d['date'], d['campaign_cost']]}.to_h
+    # def create_graph(data, value)
+    #   @pdf.chart({ views: data.map {|d| [d['date'], d[value]]}.to_h }, {type: :line})
+    # end
+
+    def campaign_cost_graph
+      @pdf.chart({ 'Spen per day' => @charts_res.map {|d| [d['date'], d['campaign_cost']]}.to_h })
+    end
+
+    def imp_vs_clicks_graph
+      @pdf.chart({ 'Impressions' => @charts_res.map {|d| [d['date'], d['impressions']]}.to_h,
+      'clicks' => @charts_res.map {|d| [d['date'], d['clicks']]}.to_h }, { type: :line })
+      # @pdf.chart({ 'clicks' => @charts_res.map {|d| [d['date'], d['clicks']]}.to_h }, { type: :line })
+    end
+
+    def ecpm_ecpc_graph
+      @pdf.chart({ 'eCPM' => @charts_res.map {|d| [d['date'], calculate_vals(d, 'eCPM')] }.to_h,
+      'eCPC' => @charts_res.map {|d| [d['date'], calculate_vals(d, 'eCPC')] }.to_h }, { type: :line })
+    end
+
+    def ctr_graph
+      @pdf.chart({ 'Ctr' => @charts_res.map {|d| [d['date'], d['ctr'].to_f]}.to_h })
+    end
+
+    def conversions_graph
+      @pdf.chart({ 'Conversions' => @charts_res.map {|d| [d['date'], d['conversions']]}.to_h })
     end
 end

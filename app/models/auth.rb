@@ -83,7 +83,7 @@ class Auth
       {
         advertiser_report: {
           groupings: [:date],
-          period: :last_30_days,
+          period: :last_7_days,
           interval: :daily
         }
       }

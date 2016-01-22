@@ -11,7 +11,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160120112035) do
+ActiveRecord::Schema.define(version: 20160121141635) do
+
+  create_table "reports", force: :cascade do |t|
+    t.string   "campaign_name"
+    t.date     "start_date"
+    t.date     "end_date"
+    t.float    "media_budget",  default: 0.0, null: false
+    t.float    "media_spent",   default: 0.0, null: false
+    t.integer  "impressions",   default: 0,   null: false
+    t.integer  "clicks",        default: 0,   null: false
+    t.float    "ctr",           default: 0.0, null: false
+    t.integer  "conversions",   default: 0,   null: false
+    t.integer  "campaign_id"
+    t.string   "comment"
+    t.float    "ecpm",          default: 0.0, null: false
+    t.float    "ecpc",          default: 0.0, null: false
+    t.float    "ecpa",          default: 0.0, null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+  end
 
   create_table "tokens", force: :cascade do |t|
     t.string   "token"
