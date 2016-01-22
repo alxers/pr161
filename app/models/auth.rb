@@ -72,7 +72,7 @@ class Auth
     def creative_params
       {
         advertiser_report: {
-          groupings: [:creative],
+          groupings: [:campaign, :creative],
           period: :last_30_days,
           interval: :daily
         }

@@ -45,7 +45,8 @@ class ReportsController < ApplicationController
   end
 
   def generate_pdf
-    send_data(PdfMaker.new.generate, :filename => "report.pdf" )
+    @report = Report.find(params[:id])
+    send_data(PdfMaker.new(@report).generate, :filename => "report.pdf" )
   end
 
   private
