@@ -13,23 +13,21 @@ class PdfMaker
     @creative_res.each do |res|
       create_table(res, 'creative_name')
     end
-    campaign_cost_graph
+
+    create_bar_graph('Spen per day', 'media_spent')
 
     @pdf.start_new_page
-    imp_vs_clicks_graph
-    ecpm_ecpc_graph
-    ctr_graph
+    create_line_graph('Impressions', 'Clicks', 'impressions', 'clicks')
+    create_line_graph('eCPM', 'eCPC', 'ecmp', 'ecpc')
+    create_bar_graph('Ctr', 'ctr')
 
     @pdf.start_new_page
-    conversions_graph
+    create_bar_graph('Conversions', 'conversions')
 
     @pdf.render
   end
 
   private
-    # def create_table
-    # end
-
     def create_table(table, title)
         @pdf.table([
           [title.titleize, 'Impressions', 'Clicks', 'Media Budget', 'Ctr', 'Conv.', 'eCPM', 'eCPC', 'eCPA', 'Spent'],
@@ -38,29 +36,16 @@ class PdfMaker
           ])
     end
 
-    # def create_graph(data, value)
-    #   @pdf.chart({ views: data.map {|d| [d['date'], d[value]]}.to_h }, {type: :line})
-    # end
-
-    def campaign_cost_graph
-      @pdf.chart({ 'Spen per day' => @charts_res.map { |d| [d.date, d.media_spent] }.to_h })
+    def prepare_chart_data(field_name)
+      @charts_res.map { |d| [d.date, d[field_name]] }.to_h
     end
 
-    def imp_vs_clicks_graph
-      @pdf.chart({ 'Impressions' => @charts_res.map { |d| [d.date, d.impressions] }.to_h,
-      'clicks' => @charts_res.map { |d| [d.date, d.clicks] }.to_h }, { type: :line })
+    def create_bar_graph(title, field_name)
+      @pdf.chart({ title => prepare_chart_data(field_name) })
     end
 
-    def ecpm_ecpc_graph
-      @pdf.chart({ 'eCPM' => @charts_res.map { |d| [d.date, d.ecpm] }.to_h,
-      'eCPC' => @charts_res.map { |d| [d.date, d.ecpc] }.to_h }, { type: :line })
-    end
-
-    def ctr_graph
-      @pdf.chart({ 'Ctr' => @charts_res.map { |d| [d.date, d.ctr] }.to_h })
-    end
-
-    def conversions_graph
-      @pdf.chart({ 'Conversions' => @charts_res.map { |d| [d.date, d.conversions] }.to_h })
+    def create_line_graph(title1, title2, field_name1, field_name2)
+      @pdf.chart({ title1 => prepare_chart_data(field_name1),
+      title2 => prepare_chart_data(field_name2) }, { type: :line })
     end
 end
