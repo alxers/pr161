@@ -1,7 +1,7 @@
 class Auth
 
   def initialize
-    unless token = Token.where(active: true).first.try(:token)
+    unless token = Token.get_active
       token = authenticate['token']
     end
     @headers = {'PFM161-API-AccessToken' => token }
@@ -15,15 +15,6 @@ class Auth
   end
 
   def get_report(type_params)
-    # grouping = [:campaign]
-    # params = {
-    #   advertiser_report: {
-    #   groupings: grouping,
-    #   period: :last_30_days,
-    #   interval: :daily
-    # }
-    # }
-
     uri = URI(Rails.application.secrets.site_url + 'api/v2/advertiser_reports/')
     https = Net::HTTP.new(uri.host,uri.port)
     https.use_ssl = true
@@ -37,7 +28,7 @@ class Auth
   end
 
   def get_camaign_report
-    get_report(campaign_params)
+    get_report(default_params)
   end
 
   def get_creative_report
@@ -50,19 +41,8 @@ class Auth
 
   private
     def default_params
-      # {
-      #   advertiser_report: {
-      #     # groupings: [:start_on],
-      #     # period: :last_30_days,
-      #     interval: :daily
-      #   }
-      # }
-    end
-
-    def campaign_params
       {
         advertiser_report: {
-          groupings: [:campaign],
           period: :last_30_days,
           interval: :daily
         }
@@ -70,22 +50,19 @@ class Auth
     end
 
     def creative_params
-      {
+      default_params.deep_merge({
         advertiser_report: {
-          groupings: [:campaign, :creative],
-          period: :last_30_days,
-          interval: :daily
+          groupings: [:campaign, :creative]
         }
-      }
+      })
     end
 
     def charts_params
-      {
+      default_params.deep_merge({
         advertiser_report: {
           groupings: [:date],
-          period: :last_7_days,
-          interval: :daily
+          period: :last_7_days
         }
-      }
+      })
     end
 end

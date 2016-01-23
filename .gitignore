@@ -18,3 +18,7 @@
 
 # Ignore swap files
 *.swp
+
+# Do not include sensitive info
+config/secrets.yml
+config/database.yml

@@ -4,10 +4,8 @@ class Chart < AdvertDatum
   def self.create_report(rep)
     report = Auth.new.get_charts_report['results']
     report = report.map do |r|
-      r['media_spent'] = r['campaign_cost']
-      r = apply_defaults_for(r).except('remaining_media_budget', 'campaign_cost', 'anomaly_clicks_filtered', 'creative_id')
+      r = apply_defaults_for(r)
     end
-
     rep.charts.create(report)
   end
 end

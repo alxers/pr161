@@ -4,7 +4,7 @@ class ReportsController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.json { render json: @reports.to_json }
+      format.json { render json: @reports.to_json(include: :campaign) }
     end
   end
 
@@ -13,7 +13,7 @@ class ReportsController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.json { render json: @report.to_json }
+      format.json { render json: @report.campaign.to_json }
     end
   end
 

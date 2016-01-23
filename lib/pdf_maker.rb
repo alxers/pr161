@@ -9,31 +9,37 @@ class PdfMaker
   end
 
   def generate
-    create_table(@campaign_res, 'campaign_name')
-    @creative_res.each do |res|
-      create_table(res, 'creative_name')
-    end
-
-    create_bar_graph('Spen per day', 'media_spent')
+    create_table_header(@campaign_res, 'campaign_name')
+    create_table([@campaign_res], 'campaign_name')
+    create_table(@creative_res, 'creative_name')
 
     @pdf.start_new_page
+    create_bar_graph('Spen per day', 'media_spent')
     create_line_graph('Impressions', 'Clicks', 'impressions', 'clicks')
     create_line_graph('eCPM', 'eCPC', 'ecmp', 'ecpc')
-    create_bar_graph('Ctr', 'ctr')
 
     @pdf.start_new_page
+    create_bar_graph('Ctr', 'ctr')
     create_bar_graph('Conversions', 'conversions')
 
     @pdf.render
   end
 
   private
+    def create_table_header(table, title)
+      @pdf.table([
+        [title.titleize, 'Start date', 'End date', 'Media budget', 'Media spent'],
+        [table.campaign_name, table.start_date, table.end_date, table.media_budget, table.media_spent]
+        ])
+    end
+
     def create_table(table, title)
-        @pdf.table([
-          [title.titleize, 'Impressions', 'Clicks', 'Media Budget', 'Ctr', 'Conv.', 'eCPM', 'eCPC', 'eCPA', 'Spent'],
-          [table.send(title), table.impressions, table.clicks, table.media_budget,
-           table.ctr, table.conversions, table.ecpm, table.ecpc, table.ecpa, table.media_spent]
-          ])
+      d = []
+      d[0] = [title.titleize, 'Impressions', 'Clicks', 'Media Budget', 'Ctr', 'Conv.', 'eCPM', 'eCPC', 'eCPA', 'Spent']
+      table.map { |t| d << [t.send(title), t.impressions, t.clicks, t.media_budget,
+       t.ctr, t.conversions, t.ecpm, t.ecpc, t.ecpa, t.media_spent]}
+
+      @pdf.table(d)
     end
 
     def prepare_chart_data(field_name)
