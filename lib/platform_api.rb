@@ -1,4 +1,4 @@
-class Auth
+class PlatformApi
 
   def initialize
     unless token = Token.get_active
@@ -15,6 +15,7 @@ class Auth
   end
 
   def get_report(type_params)
+
     uri = URI(Rails.application.secrets.site_url + 'api/v2/advertiser_reports/')
     https = Net::HTTP.new(uri.host,uri.port)
     https.use_ssl = true

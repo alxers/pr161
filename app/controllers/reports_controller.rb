@@ -1,20 +1,11 @@
 class ReportsController < ApplicationController
+  before_filter :find_report, only: [:show, :edit, :update, :generate_pdf]
+
   def index
     @reports = Report.all
-
-    respond_to do |format|
-      format.html
-      format.json { render json: @reports.to_json(include: :campaign) }
-    end
   end
 
   def show
-    @report = Report.find(params[:id])
-
-    respond_to do |format|
-      format.html
-      format.json { render json: @report.campaign.to_json }
-    end
   end
 
   def new
@@ -22,7 +13,7 @@ class ReportsController < ApplicationController
   end
 
   def create
-    @report = Report.create(report_params)
+    @report = Report.new(report_params)
     if @report.save
       redirect_to reports_path
     else
@@ -32,11 +23,9 @@ class ReportsController < ApplicationController
   end
 
   def edit
-    @report = Report.find(params[:id])
   end
 
   def update
-    @report = Report.find(params[:id])
     if @report.update_attributes(report_params)
       redirect_to reports_path
     else
@@ -45,11 +34,14 @@ class ReportsController < ApplicationController
   end
 
   def generate_pdf
-    @report = Report.find(params[:id])
     send_data(PdfMaker.new(@report).generate, :filename => "report.pdf" )
   end
 
   private
+    def find_report
+      @report = Report.find(params[:id])
+    end
+
     def report_params
       params.require(:report).permit(:campaign_id, :comment)
     end

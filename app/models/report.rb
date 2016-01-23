@@ -9,7 +9,7 @@ class Report < ActiveRecord::Base
   validate :campaign_id_is_allowed
 
   private
-  
+
     def add_campaign
       Campaign.create_report(self)
     end
@@ -29,7 +29,7 @@ class Report < ActiveRecord::Base
     end
 
     def campaign_id_is_allowed
-      report = Auth.new.get_camaign_report['results'].select {|r| r['campaign_id'] == campaign_id}.first
+      report = PlatformApi.new.get_camaign_report['results'].select {|r| r['campaign_id'] == campaign_id}.first
       if report.nil?
         self.errors.add(:base, 'Error')
       end
