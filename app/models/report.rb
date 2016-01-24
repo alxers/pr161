@@ -29,9 +29,11 @@ class Report < ActiveRecord::Base
     end
 
     def campaign_id_is_allowed
-      report = PlatformApi.new.get_campaign_report['results'].select {|r| r['campaign_id'] == campaign_id}.first
-      if report.nil?
-        self.errors.add(:base, 'Error')
+      begin
+        report = PlatformApi.new.get_campaign_report['results'].select {|r| r['campaign_id'] == campaign_id}.first
+          raise(::PlatformApiError, 'wrong id') unless report
+      rescue ::PlatformApiError => e
+        errors.add(:"Platform API error", e.to_s)
       end
     end
 end

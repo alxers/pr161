@@ -1,0 +1,2 @@
+  class PlatformApiError < StandardError
+  end

@@ -16,7 +16,7 @@ gem 'prawn'
 gem 'prawn-table'
 gem 'squid', '~> 1.0'
 gem 'simple_form'
-gem 'mysql2'
+gem 'mysql2', '~> 0.3.18'
 
 group :development, :test do
   gem 'byebug'
