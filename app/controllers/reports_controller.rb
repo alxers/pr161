@@ -17,7 +17,7 @@ class ReportsController < ApplicationController
     if @report.save
       redirect_to reports_path
     else
-      flash[:alert] = @report.errors.full_messages
+      flash.now[:alert] = @report.errors.full_messages
       render 'new'
     end
   end

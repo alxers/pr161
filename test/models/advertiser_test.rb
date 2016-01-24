@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class AdvertDatumTest < ActiveSupport::TestCase
+class AdvertiserTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

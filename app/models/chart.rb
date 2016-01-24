@@ -1,4 +1,4 @@
-class Chart < AdvertDatum
+class Chart < Advertiser
   belongs_to :report
 
   def self.create_report(rep)

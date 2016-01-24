@@ -1,4 +1,4 @@
-class AdvertDatum < ActiveRecord::Base
+class Advertiser < ActiveRecord::Base
   belongs_to :report
 
   FILTERED_FIELDS = %w(remaining_media_budget campaign_cost anomaly_clicks_filtered creative_id gross_revenues)

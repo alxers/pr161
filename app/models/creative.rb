@@ -1,4 +1,4 @@
-class Creative < AdvertDatum
+class Creative < Advertiser
   belongs_to :report
 
   def self.create_report(rep)

@@ -11,9 +11,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160123151350) do
+ActiveRecord::Schema.define(version: 20160124140127) do
 
-  create_table "advert_data", force: :cascade do |t|
+  create_table "advertisers", force: :cascade do |t|
     t.string   "campaign_name", limit: 255
     t.string   "creative_name", limit: 255
     t.date     "date"
@@ -35,7 +35,7 @@ ActiveRecord::Schema.define(version: 20160123151350) do
     t.datetime "updated_at",                              null: false
   end
 
-  add_index "advert_data", ["report_id"], name: "index_advert_data_on_report_id", using: :btree
+  add_index "advertisers", ["report_id"], name: "index_advertisers_on_report_id", using: :btree
 
   create_table "reports", force: :cascade do |t|
     t.string   "campaign_name", limit: 255
@@ -83,5 +83,5 @@ ActiveRecord::Schema.define(version: 20160123151350) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
-  add_foreign_key "advert_data", "reports"
+  add_foreign_key "advertisers", "reports"
 end

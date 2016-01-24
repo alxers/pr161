@@ -1,4 +1,4 @@
-class Campaign < AdvertDatum
+class Campaign < Advertiser
   belongs_to :report
 
   def self.create_report(rep)
