@@ -29,7 +29,7 @@ class Report < ActiveRecord::Base
     end
 
     def campaign_id_is_allowed
-      report = PlatformApi.new.get_camaign_report['results'].select {|r| r['campaign_id'] == campaign_id}.first
+      report = PlatformApi.new.get_campaign_report['results'].select {|r| r['campaign_id'] == campaign_id}.first
       if report.nil?
         self.errors.add(:base, 'Error')
       end

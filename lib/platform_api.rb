@@ -28,7 +28,7 @@ class PlatformApi
     JSON.parse(res.body)
   end
 
-  def get_camaign_report
+  def get_campaign_report
     get_report(default_params)
   end
 
