@@ -29,16 +29,31 @@ class PlatformApi
     JSON.parse(res.body)
   end
 
-  def get_campaign_report
-    get_report(default_params)
+  def get_advert_report(type, campaign_id = nil)
+    case type
+    when :campaign
+      # Advertiser.new.apply_defaults_for(get_campaign_report['results'].select {|r| r['campaign_id'] == campaign_id}.first)
+      get_campaign_report
+    when :creative
+      get_creative_report
+    when :charts
+      get_charts_report
+    end
   end
 
-  def get_creative_report
-    get_report(creative_params)
+  def get_campaign_report(campaign_id)
+    report = get_report(default_params)['results'].select {|r| r['campaign_id'] == campaign_id}.first
+    report.apply_defaults
+  end
+
+  def get_creative_report(campaign_id)
+    report = get_report(creative_params)['results'].select { |r| r['campaign_id'] == campaign_id }
+    report.apply_defaults
   end
 
   def get_charts_report
-    get_report(charts_params)
+    report = get_report(charts_params)['results']
+    report.apply_defaults
   end
 
   private

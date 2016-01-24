@@ -6,7 +6,6 @@ class Advertiser < ActiveRecord::Base
   START_DATE_CHARTS = 7
 
   def self.apply_defaults_for(table)
-    binding.pry
     if self.name == 'Charts'
       table['start_date'] = START_DATE_CHARTS.days.ago
     else
