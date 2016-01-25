@@ -1,8 +1,8 @@
 class Chart < Advertiser
 
-  def self.create_report(rep)
-    report = PlatformApi.new.get_charts_report
-    report = report.map { |r| r = apply_defaults_for(r) }
-    rep.charts.create(report)
+  def self.create_report(report)
+    charts = PlatformApi.new.get_charts_report
+    charts = charts.map { |chart| apply_defaults_for(chart) }
+    report.charts.create(charts)
   end
 end

@@ -9,6 +9,8 @@ rake db:create
 rake db:migrate
 ```
 
+Campaign id that was tested: 2140783
+
 API
 -------------
 - /api/v1/reports.json
