@@ -11,5 +11,5 @@ rake db:migrate
 
 API
 -------------
-/api/v1/reports.json
-/api/v1/reports/:ID.json
+- /api/v1/reports.json
+- /api/v1/reports/:ID.json
