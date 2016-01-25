@@ -1,5 +1,4 @@
 class Creative < Advertiser
-  belongs_to :report
 
   def self.create_report(rep)
     report = PlatformApi.new.get_creative_report(rep.campaign_id)

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160124140127) do
+ActiveRecord::Schema.define(version: 20160125080909) do
 
   create_table "advertisers", force: :cascade do |t|
     t.string   "campaign_name", limit: 255
@@ -38,22 +38,10 @@ ActiveRecord::Schema.define(version: 20160124140127) do
   add_index "advertisers", ["report_id"], name: "index_advertisers_on_report_id", using: :btree
 
   create_table "reports", force: :cascade do |t|
-    t.string   "campaign_name", limit: 255
-    t.date     "start_date"
-    t.date     "end_date"
-    t.float    "media_budget",  limit: 24,  default: 0.0, null: false
-    t.float    "media_spent",   limit: 24,  default: 0.0, null: false
-    t.integer  "impressions",   limit: 4,   default: 0,   null: false
-    t.integer  "clicks",        limit: 4,   default: 0,   null: false
-    t.float    "ctr",           limit: 24,  default: 0.0, null: false
-    t.integer  "conversions",   limit: 4,   default: 0,   null: false
-    t.integer  "campaign_id",   limit: 4
-    t.string   "comment",       limit: 255
-    t.float    "ecpm",          limit: 24,  default: 0.0, null: false
-    t.float    "ecpc",          limit: 24,  default: 0.0, null: false
-    t.float    "ecpa",          limit: 24,  default: 0.0, null: false
-    t.datetime "created_at",                              null: false
-    t.datetime "updated_at",                              null: false
+    t.integer  "campaign_id", limit: 4
+    t.string   "comment",     limit: 255
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
   end
 
   create_table "tokens", force: :cascade do |t|

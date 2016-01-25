@@ -10,7 +10,9 @@ class PdfMaker
 
   def generate
     create_table_header(@campaign_res, 'campaign_name')
+    @pdf.move_down 50
     create_table([@campaign_res], 'campaign_name')
+    @pdf.move_down 50
     create_table(@creative_res, 'creative_name')
 
     @pdf.start_new_page
@@ -29,14 +31,14 @@ class PdfMaker
     def create_table_header(table, title)
       @pdf.table([
         [title.titleize, 'Start date', 'End date', 'Media budget', 'Media spent'],
-        [table.campaign_name, table.start_date, table.end_date, table.media_budget, table.media_spent]
+        [table.campaign_name.titleize, table.start_date, table.end_date, table.media_budget, table.media_spent]
         ])
     end
 
     def create_table(table, title)
       d = []
       d[0] = [title.titleize, 'Impressions', 'Clicks', 'Media Budget', 'Ctr', 'Conv.', 'eCPM', 'eCPC', 'eCPA', 'Spent']
-      table.map { |t| d << [t.send(title), t.impressions, t.clicks, t.media_budget,
+      table.map { |t| d << [t.send(title).titleize, t.impressions, t.clicks, t.media_budget,
        t.ctr, t.conversions, t.ecpm, t.ecpc, t.ecpa, t.media_spent]}
 
       @pdf.table(d)
